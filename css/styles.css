@@ -1,0 +1,12 @@
+table       { 
+	height: 300px; 
+	width: 300px; 
+}
+table tr    { }
+table tr td { 
+	height: 33%; 
+	width:  33%; 
+	text-align: center;
+}
+
+.dragable	{  }
