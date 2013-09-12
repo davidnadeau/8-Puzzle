@@ -10,19 +10,19 @@ function init() {
 	var oldOffset = {x:0,y:0};
 
 	$('.draggable').draggable( {
-		containment: '#puzzle',
-		cursor: 	 'move',
-		snap: 		 '#row td',
-		stack: 		 '#row td',
-		revert:    	 true, 
-		start: 		 onClick
+		containment: 	'#puzzle',
+		cursor: 	 	'move',
+		snap: 		 	'#row td',
+		stack: 		 	'#row td',
+		revert:    	 	true, 
+		start: 		 	onClick
 
  	});
 	
 	$('.draggable').droppable( {
-	  	accept: 	'#row td',
-	  	hoverClass: 'hovered',
-	  	drop: 		onDrop
+	  	accept: 		'#row td',
+	  	hoverClass: 	'hovered',
+	  	drop: 			onDrop
 	});
 	
 	function onDrop( event, ui ) {
@@ -62,8 +62,8 @@ function swapTiles(){
 	function getRandomInt (min, max) {
 	    return Math.floor(Math.random() * (max - min + 1)) + min;
 	}
+	
 	var firstTile = getRandomInt(1,9);
-
 	var secondTile = getRandomInt(1,9);
 
 	var pOne = $('#tile'+ firstTile);
