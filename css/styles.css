@@ -1,12 +1,15 @@
-table       { 
+table { 
 	height: 300px; 
 	width: 300px; 
 }
-table tr    { }
-table tr td { 
+table tr { 
 	height: 33%; 
+}
+table tr td { 
 	width:  33%; 
 	text-align: center;
 }
 
-.dragable	{  }
+.dragable {  
+
+}
