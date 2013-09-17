@@ -1,0 +1,24 @@
+{
+  "name": "8-Puzzle",
+  "version": "0.0.0",
+  "homepage": "https://github.com/Soote/8-Puzzle",
+  "authors": [
+    "Soote"
+  ],
+  "description": "8-Puzzle Solver",
+  "main": "js/app.js",
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular-mocks": "~1.0.8",
+    "angular-resource": "~1.0.8",
+    "angular": "~1.0.8"
+  }
+}
