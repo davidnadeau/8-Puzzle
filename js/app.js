@@ -1,111 +1,93 @@
-(function(){
-"using strict";
+//(function() {
+"using strict"
+window.Puzzle = {
 
-$(document).ready(function(){
-	$( init );
-	for(var i = Math.random()*100;i>0;i--){
-		//swapTiles();
-	}
-})
+	oldOffset: {left:10, top:10},
 
-function init() {
+	init: function() {
 
-	var oldOffset = {x:0,y:0};
-
-	$('.draggable').draggable( {
-		containment: 	'#puzzle',
-		cursor: 	 'move',
-		snap: 		 '#row td',
-		stack: 		 '#row td',
-		revert:    	 true, 
-		start: 		 onClick
-
- 	});
-	
-	$('.draggable').droppable( {
-	  	accept: 	'#row td',
-	  	hoverClass: 	'hovered',
-	  	drop: 		onDrop
-	});
-	
-	function onDrop( event, ui ) {
-		//js bug in ecmascript, this points to global object (window) for inner functions
 		var that = this;
 
-		if ( validMove() ) {
-		    ui.draggable.draggable( 'option', 'revert', false );
-		    ui.draggable.position( { of: $(this), my: 'left top', at: 'left top' } );
-	  	    $(this).offset({ top: oldOffset.y, left: oldOffset.x});
-	  	}
+		$('.draggable').draggable( {
+			containment: 	'#puzzle', 	//keep tile within puzzle
+			cursor: 	 'move',	 	//change cursor on drag
+			snap: 		 '#row td',		//snap tile to puzzle grid
+			stack: 		 '#row td',		//display active tile above puzzle
+			revert:    	 true,			//revert drag by default
+			distance: 	 0,
+			start: 		 onDrag
 
-	  	function validMove(){
-			var ydisplacement = Math.abs(oldOffset.y - $(that).context.offsetTop),
-				xdisplacement = Math.abs(oldOffset.x - $(that).context.offsetLeft);
+	 	});
 
-			/* valid move conditions */
-			//only moving 1 tile
-			var a = ydisplacement===99 || xdisplacement===99,
-			//vertical xor horizontal move
-				b = ydisplacement===0  || xdisplacement===0,
-			//moving onto the blank tile
-				c = $(that).context.id === "tile9";
-
-			return (a&&b&&c)?true:false;
-		}
-
-		if(checkGameState()){
-			console.log("YOU WIN!!");
-		}
-	}
-
-	function onClick( event ) {
-	    oldOffset.y = $(this).context.offsetTop;
-  	    oldOffset.x = $(this).context.offsetLeft;
-	    $(this).draggable( 'option', 'revert', true );
-
-	}
-}
-
-function swapTiles(){
-
-	var firstTile = getRandomInt(1,9),
-		secondTile = getRandomInt(1,9);
-
-	var pOne = $('#tile'+ firstTile),
-		pTwo = $('#tile'+ secondTile);
-
-	//swap
-	var oldOffset = pOne.offset();
-	pOne.offset( pTwo.offset() );
-	pTwo.offset( oldOffset );
-
-	function getRandomInt (min, max) {
-	    return Math.floor(Math.random() * (max - min + 1)) + min;
-	}
-}
-
-function checkGameState(){
-	var padding = 10;
-	var width  = $('#tile1').width(),
-		height = $('#tile1').height();
-
-
-	for(var i=1;i<10;i++){
-		var a = about($('#tile'+i).offset().left - padding, 
-			((i-1)%3)*width),
-			b = about($('#tile'+i).offset().top - padding, 
-				i<4?0:i<7?height:2*height);
+		$('.draggable').droppable( {
+		  	accept: 	'#row td',
+		  	hoverClass: 	'hovered',
+		  	drop: 		onDrop
+		});
 	
-		if(!(a&&b)){
-			return false;	
+		function onDrag( event, ui ) {
+		    that.oldOffset.top = ui.offset.top;
+	  	    that.oldOffset.left = ui.offset.left;
+		    $(this).draggable( 'option', 'revert', true );
 		}
+
+		function onDrop( event, ui ) {
+			if ( that.validMove( ui.draggable ) ) {
+			    ui.draggable.draggable( 'option', 'revert', false );
+			    that.swapTiles(ui.draggable, $(this));
+		  	}else{
+		  		//console.log("NOPE");
+		  	}
+
+			that.checkGameState();
+		}
+	},
+	
+  	validMove: function( tile ) {
+		var ydisplacement = Math.abs(this.oldOffset.top - tile.offsetTop),
+			xdisplacement = Math.abs(this.oldOffset.left - tile.offsetLeft);
+
+		/* valid move conditions */
+		//only moving 1 tile
+		var a = ydisplacement===99 || xdisplacement===99,
+		//vertical xor horizontal move
+			b = ydisplacement===0  || xdisplacement===0,
+		//moving onto the blank tile
+			c = tile.context.id === "tile9";
+
+		return (a&&b&&c)?true:false;
+	},
+
+	swapTiles: function( dropper, droppee ){
+		dropper.offset( droppee.offset() );
+		droppee.offset( this.oldOffset );
+	},
+
+	checkGameState: function(){
+		var padding = 10;
+		var width  = $('#tile1').width(),
+			height = $('#tile1').height();
+
+
+		for(var i=0;i<9;i++){
+			var a = this.about($('#tile'+i).offset().left - padding, 
+				(i%3)*width),
+				b = this.about($('#tile'+i).offset().top - padding, 
+					i<4?0:i<7?height:2*height);
+		
+			if(!(a&&b)){
+				return false;	
+			}
+		}
+		console.log("YOU WIN!!");
+		return true;
+
+	},
+
+	about: function( currentPos,origPos ){
+		return Math.abs(currentPos-origPos)<10;
 	}
-	return true;
 
-}
-
-function about(currentPos,origPos){
-	return Math.abs(currentPos-origPos)<10;
-}
-
-})();
+};
+ // Puzzle.init();
+//})();

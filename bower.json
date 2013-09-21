@@ -17,8 +17,9 @@
     "tests"
   ],
   "dependencies": {
-    "angular-mocks": "~1.0.8",
-    "angular-resource": "~1.0.8",
-    "angular": "~1.0.8"
+    "jquery": "~2.0.3",
+    "jquery-ui": "~1.10.3",
+    "jasmine-jquery": "~1.5.8",
+    "jquery-simulate": "*"
   }
 }
