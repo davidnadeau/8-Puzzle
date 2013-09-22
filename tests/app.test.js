@@ -18,8 +18,9 @@ describe("Puzzle Game ... ", function() {
 				'<td id = "tile7" style = "width:33%" class = "draggable">7</td>'+
 				'<td id = "tile8" style = "width:33%" class = "draggable">8</td>'+
 			'</tr>'+
-		'</table>'
-    	);
+		'</table>' );
+
+    Puzzle.init();
   });
 
   afterEach(function () {
@@ -28,13 +29,11 @@ describe("Puzzle Game ... ", function() {
 
 	describe("when starting the game", function() {
 
-		it("should set the draggable property of each tile to true", function() {
-			$('.draggable').draggable();
+		it("should set each tile to be draggable", function() {
 			expect($('.draggable').draggable( "option", "disabled" )).toEqual( false );
 		});
 
-		it("should set the droppable property on each tile", function() {
-			$('.draggable').droppable();
+		it("should set each tile to be droppable", function() {
 			expect($('.draggable').droppable( "option", "disabled" )).toEqual( false );
 		});
 		
@@ -43,45 +42,78 @@ describe("Puzzle Game ... ", function() {
 	describe("when checking a move", function() {
 
 		it("should store the start position of the tile being dragged", function() {
-			var displacement = 109;
-
-			Puzzle.init();
-
-			expect(Puzzle.oldOffset.top).toEqual( 10 );
-			expect(Puzzle.oldOffset.left).toEqual( 10 );
-
-			var el = $("#tile4");
+			var oldOffset = Puzzle.oldOffset;
+			var el = $("#tile3");
+			
 			el.draggable();
+
 			el.simulate( "drag", {
-				dx: displacement,
-				dy: displacement
+				dx: 0,
+				dy: 0
 			});
 
-			expect(Puzzle.oldOffset.top - displacement).toEqual( 0 );
-			expect(Puzzle.oldOffset.left - displacement).toEqual( 0 );
+			expect(Puzzle.oldOffset.top).toEqual( 109 );
+			expect(Puzzle.oldOffset.left).toEqual( 10 );
+		});
+		
+		it("should ensure that the displacement is at most one tile on drop", function() {
+			expect(Puzzle.validDisplacement( 100, 100 )).toEqual( false );
+			expect(Puzzle.validDisplacement( 99, 100 )).toEqual( true );
+			expect(Puzzle.validDisplacement( 100, 99 )).toEqual( true);
+			expect(Puzzle.validDisplacement( 99, 99 )).toEqual( true);
 		});
 
-		it("should check if the displacement is at most one tile", function() {
-			//onClick, move, onDrop, check distance.
-		});
+		it("should ensure that the tile can only move up or down", function() {
+			expect(Puzzle.validDirection( 1, 1 )).toEqual( false );
+			expect(Puzzle.validDirection( 1, 0 )).toEqual( true );
+			expect(Puzzle.validDirection( 0, 1 )).toEqual( true);
+			expect(Puzzle.validDirection( 0, 0 )).toEqual( true)		});
 		
-		it("should check if the displacement is at most one tile", function() {
-			//onClick, move, onDrop, check that direction is !diagonal
+		it("should ensure that the droppee is the blank tile", function() {
+			expect(Puzzle.isBlank( "tile3" )).toEqual( false );
+			expect(Puzzle.isBlank( "tile0" )).toEqual( true );
 		});
-		
-		it("should check if the displacement is at most one tile", function() {
-			//onDrop check if blank tile.
+
+	});
+	describe("when checking the position of a tile it", function() {
+
+		it("should return true if within 10 pixels of correct position", function() {
+			expect(Puzzle.approximately(0, 9)).toEqual( true );
+			expect(Puzzle.approximately(9, 0)).toEqual( true );
+			expect(Puzzle.approximately(0, 10)).toEqual( false );
+			expect(Puzzle.approximately(10, 0)).toEqual( false );
+		});
+
+		it("should get the absolute difference between two numbers", function() {
+			expect(Puzzle.getDifference(10, -10)).toEqual( 20 );
+			expect(Puzzle.getDifference(-123, 100)).toEqual( 223 );
+			expect(Puzzle.getDifference(109, 10)).toEqual( 99 );
 		});
 
 	});
 
-	describe("when checking order of a tile it", function() {
+	describe("on a valid move tile", function() {
 
-		it("should return true if within 10 pixels of correct position", function() {
-			expect(Puzzle.about(0, 9)).toEqual( true );
-			expect(Puzzle.about(9, 0)).toEqual( true );
-			expect(Puzzle.about(0, 10)).toEqual( false );
-			expect(Puzzle.about(10, 0)).toEqual( false );
+		it("the draggable and droppable should switch offsets", function() {
+
+			var 
+				draggable = $( "#tile3" ).draggable(),
+				droppable = $( "#tile0" ).droppable(),
+
+				droppableOffset = droppable.offset(),
+				draggableOffset = draggable.offset(),
+				dx = droppableOffset.left - draggableOffset.left,
+				dy = droppableOffset.top - draggableOffset.top;
+
+			draggable.simulate( "drag", {
+				dx: dx,
+				dy: dy
+			});
+
+			expect(draggable.offset().top).toEqual( droppableOffset.top );
+		  expect(draggable.offset().left).toEqual( droppableOffset.left );
+		  expect(droppable.offset().top).toEqual( draggableOffset.top );
+		  expect(droppable.offset().left).toEqual( draggableOffset.left );
 		});
 
 	});
