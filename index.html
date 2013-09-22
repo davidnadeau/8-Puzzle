@@ -32,14 +32,11 @@
 				</div>
 				<div class="col-6 ui-controls">
 					<div class="move-list">
-						<h1>Move List</h1>
-						<div class ="movelist">
-							<p>move<br />move<br />move<br />move<br />move<br />move<br />move<br /></p>
-						</div>
+						<h1>Goal</h1>
 					</div>
 					<div class="search-buttons">
-						<input type="button" value="A* Search"/><br />
-						<input type="button" value="Breadth First Search"/>
+						<input id="astar" type="button" value="A* Search"/><br />
+						<input id="bfs" type="button" value="Breadth First Search"/>
 						<input id="setgoalstate" type="button" value="Set Goal State"/>						
 						<input id="scramble" type="button" value="Scramble"/>
 					</div>
@@ -52,25 +49,29 @@
 		<script src="js/UninformedSearch.js"></script>
 		<script src="js/HeuristicSearch.js"></script>
 		<script type="text/javascript">
-		Puzzle.init()
+		Puzzle.init();
+		$( '.move-list' ).html( "<h1>Goal</h1><p>"+Puzzle.getGoalState()+"</p>" );
+
 		$('#scramble').click( function() {
-			var moveList = Puzzle.scrambleTiles(),
-				formatedList = formatMoveList();
-			console.log(formatedList);
-			$('.movelist').html(formatedList);
-			function formatMoveList(){
-				var list = "<p>";
-				for(var i = 0; i < moveList.length; i++){
-					if(i!==0 && i%3 === 0){list += "<br />";}
-					list += moveList[i];
-				}
-				return list + "</p>";
-			}
+			Puzzle.scrambleTiles();
+			$( '.move-list' ).html( "<h1>Goal</h1><p>"+Puzzle.getGoalState()+"</p>" );
+		});
+		
+		$('#astar').click( function() {
+			$( '.move-list' ).html( "<h1>Start</h1><p>"+Puzzle.getTilePositions()
+				+"</p><h1>Goal</h1><p>"+Puzzle.getGoalState()+"</p>" );
+		});
+		
+		$('#bfs').click( function() {
+			$( '.move-list' ).html( "<h1>Start</h1><p>"+Puzzle.getTilePositions()
+				+"</p><h1>Goal</h1><p>"+Puzzle.getGoalState()+"</p>" );
 		});
 
 		$('#setgoalstate').click( function() {
 			var oldGoalState = Puzzle.getGoalState();
 			Puzzle.setGoalState(Puzzle.getTilePositions());
+			$( '.move-list' ).html( "<h1>Goal</h1><p>"+Puzzle.getGoalState()+"</p>" );
+
 		});
 		</script>
 	</body>

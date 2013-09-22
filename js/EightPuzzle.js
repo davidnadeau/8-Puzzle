@@ -88,14 +88,12 @@ window.Puzzle = (function(){
                 return Math.floor(Math.random() * (max - min + 1)) + min;
             }
 
-            var firstTile, secondTile, moveList=[];
+            var firstTile, secondTile;
             for(var i = Math.random()*100;i>0;i--){
                 firstTile = getRandomInt(0,8);
                 secondTile = getRandomInt(0,8);
-                moveList.push(firstTile, '--->', secondTile);
                 Puzzle.swapTiles( firstTile, secondTile );
             }
-            return moveList;
         },
         //test swap tiles
         swapTiles: function( firstTile, secondTile ){
@@ -142,6 +140,15 @@ window.Puzzle = (function(){
             }
             return true;
         }
+        //,
+        // formatMoveList: function( movelist ) {
+        //     var list = "<h1>Move List</h1><p>";
+        //     for(var i = 0; i < movelist.length; i++){
+        //         if(i!==0 && i%3 === 0){list += "<br />";}
+        //         list += movelist[i];
+        //     }
+        //     return list + "</p>";
+        // }
 
     }
 })();
