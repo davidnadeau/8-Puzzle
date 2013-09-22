@@ -87,7 +87,8 @@
 	});
 
 	$('#setgoalstate').click( function() {
-		var oldGoalState = Puzzle.getGoalState();
+		// console.log(Puzzle.getTilePositions());
+		// var oldGoalState = Puzzle.getGoalState();
 		Puzzle.setGoalState(Puzzle.getTilePositions());
 		$( '.move-list' ).html( "<h1>Goal</h1><p>"+Puzzle.getGoalState()+"</p>" );
 
