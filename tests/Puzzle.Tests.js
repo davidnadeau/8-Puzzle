@@ -23,10 +23,6 @@ describe("Puzzle Game ... ", function() {
     Puzzle.init();
   });
 
-  afterEach(function () {
-
-  });
-
 	describe("when starting the game", function() {
 
 		it("should set each tile to be draggable", function() {
@@ -42,8 +38,9 @@ describe("Puzzle Game ... ", function() {
 	describe("when checking a move", function() {
 
 		it("should store the start position of the tile being dragged", function() {
-			var oldOffset = Puzzle.oldOffset;
-			var el = $("#tile3");
+			var 
+				oldOffset = Puzzle.oldOffset,
+				el = $("#tile3");
 			
 			el.draggable();
 
@@ -51,7 +48,6 @@ describe("Puzzle Game ... ", function() {
 				dx: 0,
 				dy: 0
 			});
-
 			expect(Puzzle.oldOffset.top).toEqual( 109 );
 			expect(Puzzle.oldOffset.left).toEqual( 10 );
 		});
@@ -92,16 +88,18 @@ describe("Puzzle Game ... ", function() {
 
 	});
 
-	describe("on a valid move tile", function() {
+	describe("on a valid move", function() {
 
-		it("the draggable and droppable should switch offsets", function() {
+		var draggable, droppable, droppableOffset, draggableOffset;
 
-			var 
-				draggable = $( "#tile3" ).draggable(),
-				droppable = $( "#tile0" ).droppable(),
+		beforeEach(function() {
+		  draggable = $( "#tile3" ).draggable();
+			droppable = $( "#tile0" ).droppable();
 
-				droppableOffset = droppable.offset(),
-				draggableOffset = draggable.offset(),
+			droppableOffset = droppable.offset();
+			draggableOffset = draggable.offset();
+
+			var
 				dx = droppableOffset.left - draggableOffset.left,
 				dy = droppableOffset.top - draggableOffset.top;
 
@@ -109,11 +107,34 @@ describe("Puzzle Game ... ", function() {
 				dx: dx,
 				dy: dy
 			});
+		});
 
+		it("the draggable and droppable tiles should switch offsets", function() {
 			expect(draggable.offset().top).toEqual( droppableOffset.top );
 		  expect(draggable.offset().left).toEqual( droppableOffset.left );
 		  expect(droppable.offset().top).toEqual( draggableOffset.top );
 		  expect(droppable.offset().left).toEqual( draggableOffset.left );
+		});
+
+		it("check the order of the tiles", function() {
+
+			//0 and 3 are out of order
+			expect(Puzzle.checkGameState()).toEqual( false );
+
+			//swap offsets,
+			//before swap store old draggable position 
+			//winning state --> losing state ( tile swap )
+			draggable.simulate( "drag", {
+				dx: 0,
+				dy: 0
+			});
+
+			draggable.offset( droppable.offset() );
+		  droppable.offset( Puzzle.oldOffset );
+
+		  //0 and 3 have been correct
+			expect(Puzzle.checkGameState()).toEqual( true );
+
 		});
 
 	});

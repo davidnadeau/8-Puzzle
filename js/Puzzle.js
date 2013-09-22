@@ -30,36 +30,40 @@ window.Puzzle = {
 		}
 
 		function onDrop( event, ui ) {			
-
-			if ( Puzzle.validMove( $(this) ) ) {
+			if ( Puzzle.validMove($(this)) ) {
 			    ui.draggable.draggable( 'option', 'revert', false );
+
+			    //swap tiles
+			    ui.draggable.offset($(this).offset());
 			    $(this).offset(Puzzle.oldOffset);
-		  	}else{
-		  		//console.log("NOPE");
-		  	}
+		  }
 
 			Puzzle.checkGameState();
 		}
 	},
 	
   validMove: function( tile ) {
-		var ydisplacement = Puzzle.getDifference(Puzzle.oldOffset.top, tile.offset().top),
-				xdisplacement = Puzzle.getDifference(Puzzle.oldOffset.left,tile.offset().left);
-		/* valid move conditions */
-		var a = Puzzle.validDisplacement( ydisplacement, xdisplacement ),
-		//vertical xor horizontal move
+		var 
+			ydisplacement = Puzzle.getDifference(Puzzle.oldOffset.top, tile.offset().top),
+			xdisplacement = Puzzle.getDifference(Puzzle.oldOffset.left,tile.offset().left),
+			/* valid move conditions */ 
+			a = Puzzle.validDisplacement( ydisplacement, xdisplacement ),
+			//vertical xor horizontal move
 			b = Puzzle.validDirection( ydisplacement, xdisplacement),
-		//moving onto the blank tile
+			//moving onto the blank tile
 			c = Puzzle.isBlank(tile.context.id);
+		
 		return (a&&b&&c)?true:false;
 	},
 
 	validDisplacement: function( ydisplacement, xdisplacement ) {
 		return ydisplacement===99 || xdisplacement===99;
 	},
+
 	validDirection: function( ydisplacement, xdisplacement ) {
 		return ydisplacement===0  || xdisplacement===0;
 	},
+
 	isBlank: function( tile ) {
 		return tile === "tile0";
 	},
@@ -67,24 +71,22 @@ window.Puzzle = {
 	getDifference: function( x, y ) {
 		return Math.abs(x - y);
 	},
-	
+
 	checkGameState: function(){
-		var padding = 10;
-		var width  = $('#tile0').width(),
-			height = $('#tile0').height();
+		var 
+			padding = 10,
+			tileSideLength  = $('#tile0').width();
 
 
 		for(var i=0;i<9;i++){
-			var a = Puzzle.approximately($('#tile'+i).offset().left - padding, 
-				(i%3)*width),
-				b = Puzzle.approximately($('#tile'+i).offset().top - padding, 
-					i<4?0:i<7?height:2*height);
+			var
+			  a = Puzzle.approximately( $('#tile'+i).offset().left - padding, ( i%3 )*tileSideLength ),
+				b = Puzzle.approximately( $('#tile'+i).offset().top - padding, i<3?0:i<6?tileSideLength:2*tileSideLength );
 		
 			if(!(a&&b)){
 				return false;	
 			}
 		}
-		console.log("YOU WIN!!");
 		return true;
 
 	},
@@ -94,5 +96,5 @@ window.Puzzle = {
 	}
 
 };
- // Puzzle.init();
+Puzzle.init();
 //})();
