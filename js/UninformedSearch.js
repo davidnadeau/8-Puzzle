@@ -1,12 +1,12 @@
 window.UninformedSearch = (function(){
-	"using strict"
+  "using strict"
 
-	return {
-		breadthFirstSearch: function() {
+  return {
+    breadthFirstSearch: function() {
 
-			return {
-				init: function() {}
-			};
-		}
-	};
+      return {
+        init: function() {}
+      };
+    }
+  };
 })();
