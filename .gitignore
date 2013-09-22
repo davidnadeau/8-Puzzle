@@ -1,11 +1,3 @@
 # Backup Files #
 ################
 *~
-
-# Bower Dependencies #
-######################
-bower_components
-
-# Node Dependencies #
-#####################
-node_modules
