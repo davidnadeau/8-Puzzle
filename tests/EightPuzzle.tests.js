@@ -31,6 +31,27 @@ describe("Puzzle Game ... ", function() {
         it("should set each tile to be droppable", function() {
             expect($('.draggable').droppable( "option", "disabled" )).toEqual( false );
         });
+
+        it("should scramble the tiles", function() {
+            var originalPosition, newPositions;
+
+            originalPositions = Puzzle.getTilePositions();
+            Puzzle.scrambleTiles();
+            newPositions = Puzzle.getTilePositions();
+            expect(Puzzle.tilesIdentical(originalPositions, newPositions)).toBe( false );
+        });
+    
+        it("should swap two tiles", function() {
+            var firstTile = $("#tile3"),
+                secondTile =  $("#tile8"),
+                firstTileOffset = {top:firstTile.offset().top,left:firstTile.offset().left},
+                secondTileOffset = {top:secondTile.offset().top,left:secondTile.offset().left};
+
+            Puzzle.swapTiles(firstTile.selector.slice(-1), secondTile.selector.slice(-1));
+            
+            expect( firstTile.offset() ).toEqual( secondTileOffset );
+            expect( secondTile.offset()).toEqual( firstTileOffset ); 
+        });
     });
 
     describe("when checking a move", function() {
@@ -70,11 +91,11 @@ describe("Puzzle Game ... ", function() {
     });
 
     describe("when checking the position of a tile it", function() {
-        it("should return true if within 10 pixels of correct position", function() {
-            expect(Puzzle.approximately(0, 9)).toEqual( true );
-            expect(Puzzle.approximately(9, 0)).toEqual( true );
-            expect(Puzzle.approximately(0, 10)).toEqual( false );
-            expect(Puzzle.approximately(10, 0)).toEqual( false );
+        it("should return true if within 15 pixels of correct position", function() {
+            expect(Puzzle.approximately(0, 19)).toEqual( true );
+            expect(Puzzle.approximately(19, 0)).toEqual( true );
+            expect(Puzzle.approximately(0, 20)).toEqual( false );
+            expect(Puzzle.approximately(20, 0)).toEqual( false );
         });
 
         it("should get the absolute difference between two numbers", function() {
@@ -126,8 +147,59 @@ describe("Puzzle Game ... ", function() {
             draggable.offset( droppable.offset() );
             droppable.offset( Puzzle.getOldOffset() );
 
-            //0 and 3 have been correct
+            //0 and 3 have been corrected
             expect(Puzzle.checkGameState()).toEqual( true );
         });
+    });
+
+    describe("when handling goal states", function() {
+        beforeEach(function() {
+            Puzzle.init();
+            Puzzle.setGoalState([0,1,2,3,4,5,6,7,8]);
+        });
+
+        it("should set the goalState", function() {
+            expect( Puzzle.getGoalState() ).toEqual( [0,1,2,3,4,5,6,7,8] );
+        });
+
+        it("should gather the position of all the tiles into an array", function(){
+            expect(Puzzle.getTilePositions()).not.toEqual(  [1,4,2,3,5,8,6,7,0] );
+            dragonDrop("#tile1","#tile0");
+            dragonDrop("#tile4","#tile0");
+            dragonDrop("#tile5","#tile0");
+            dragonDrop("#tile8","#tile0");
+            expect(Puzzle.getTilePositions()).toEqual(  [1,4,2,3,5,8,6,7,0] );
+        });
+
+        it("it should handle any legal goal state", function() {
+            expect(Puzzle.checkGameState()).toEqual( true );
+
+            Puzzle.setGoalState([1,4,2,3,5,8,6,7,0]);
+            expect(Puzzle.checkGameState()).toEqual( false );
+
+            dragonDrop("#tile1","#tile0");
+            dragonDrop("#tile4","#tile0");
+            dragonDrop("#tile5","#tile0");
+            dragonDrop("#tile8","#tile0");
+            expect(Puzzle.checkGameState()).toEqual( true );
+        });
+
+        function dragonDrop(drag, drop){
+            var draggable, droppable, droppableOffset, draggableOffset;
+
+            draggable = $( drag ).draggable();
+            droppable = $( drop ).droppable();
+            droppableOffset = droppable.offset();
+            draggableOffset = draggable.offset();
+            
+            var
+                dx = droppableOffset.left - draggableOffset.left,
+                dy = droppableOffset.top - draggableOffset.top;
+
+            draggable.simulate( "drag", {
+                dx: dx,
+                dy: dy
+            });
+        }
     });
 });

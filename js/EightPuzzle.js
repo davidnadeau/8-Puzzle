@@ -1,6 +1,7 @@
 window.Puzzle = (function(){
     "using strict"
-    var oldOffset =  { left:10, top:10 };
+    var oldOffset =  { left:10, top:10 },
+        goalState =  [0,1,2,3,4,5,6,7,8];
 
     return {
         init: function() {
@@ -17,6 +18,7 @@ window.Puzzle = (function(){
 
             $('.draggable').droppable( {
                 accept:     '#row td',
+                cursor:       'arrow',     //change cursor back to default on drop
                 hoverClass: 'hovered',
                 drop:       onDrop
             });
@@ -34,10 +36,9 @@ window.Puzzle = (function(){
                     ui.draggable.offset($(this).offset());
                     $(this).offset(oldOffset);
                 }
-                    console.log(Puzzle.checkGameState());
 
                 if( Puzzle.checkGameState() ){
-                    console.log("WINNER");
+                    // console.log("WINNER");
                 }
             }
         },
@@ -66,28 +67,81 @@ window.Puzzle = (function(){
         getDifference: function( x, y ) {
             return Math.abs(x - y);
         },
-        checkGameState: function(){
+        checkGameState: function() {
             var 
-                padding = 10,
-                tileSideLength  = $('#tile0').width();
-
+                padding = 15,
+                tileSideLength  = $('#tile0').width()+padding;
 
             for(var i=0;i<9;i++){
                 var
-                    dx = Puzzle.approximately( $('#tile'+i).offset().left - padding, ( i%3 )*tileSideLength ),
-                    dy = Puzzle.approximately( $('#tile'+i).offset().top - padding, i<3?0:i<6?tileSideLength:2*tileSideLength );
-                
+                    dx = Puzzle.approximately( $('#tile'+goalState[i]).offset().left, ( i%3 )*tileSideLength ),
+                    dy = Puzzle.approximately( $('#tile'+goalState[i]).offset().top, i<3?0:i<6?tileSideLength:2*tileSideLength );
+               
                 if(!(dx&&dy)){
                     return false; 
                 }
             }
             return true;
         },
+        scrambleTiles: function() {
+            function getRandomInt (min, max) {
+                return Math.floor(Math.random() * (max - min + 1)) + min;
+            }
+
+            var firstTile, secondTile, moveList=[];
+            for(var i = Math.random()*100;i>0;i--){
+                firstTile = getRandomInt(0,8);
+                secondTile = getRandomInt(0,8);
+                moveList.push(firstTile, '--->', secondTile);
+                Puzzle.swapTiles( firstTile, secondTile );
+            }
+            return moveList;
+        },
+        //test swap tiles
+        swapTiles: function( firstTile, secondTile ){
+            var pOne = $('#tile'+ firstTile),
+                pTwo = $('#tile'+ secondTile),
+                oldOffset = pOne.offset();
+
+            //swap
+            pOne.offset( pTwo.offset() );
+            pTwo.offset( oldOffset );
+        },
         approximately: function( currentPos,origPos ){
-            return Math.abs(currentPos-origPos)<10;
+            return Math.abs(currentPos-origPos)<20;
         },
         getOldOffset: function(){
             return oldOffset;
+        },
+        getGoalState: function(){
+            return goalState;
+        },
+        setGoalState: function( newGoalState ){
+            goalState = newGoalState;
+        },
+        getTilePositions: function(){
+            var y = 0,
+                x = 0;
+                originalTilePositions = [];         
+            for(var i = 0; i < 9; i++) {
+                if((i%3)===0) {y++;}
+                
+                var el = $( document.elementFromPoint(80*(x%3+1), 80*(y)) ),
+                    val = el.context.innerHTML || 0;
+                originalTilePositions.push(+val);
+                x++;
+                
+            }
+            return originalTilePositions;
+        },
+        tilesIdentical: function(a, b) {
+            var i = a.length;
+
+            while (i--) {
+                if (a[i] !== b[i]) return false;
+            }
+            return true;
         }
+
     }
 })();

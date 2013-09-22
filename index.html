@@ -32,13 +32,16 @@
 				</div>
 				<div class="col-6 ui-controls">
 					<div class="move-list">
-					<h1>Move List</h1>
-					<p>move0<br/>move1<br/>move2<br/>move3<br/>move4<br/>move5<br/>move6<br/>move7<br/>move7<br/>move8<br/>move9</p>
+						<h1>Move List</h1>
+						<div class ="movelist">
+							<p>move<br />move<br />move<br />move<br />move<br />move<br />move<br /></p>
+						</div>
 					</div>
 					<div class="search-buttons">
 						<input type="button" value="A* Search"/><br />
 						<input type="button" value="Breadth First Search"/>
-						<input type="button" value="Scramble"/>
+						<input id="setgoalstate" type="button" value="Set Goal State"/>						
+						<input id="scramble" type="button" value="Scramble"/>
 					</div>
 				</div>
 			</div>
@@ -48,7 +51,28 @@
 		<script src="js/EightPuzzle.js"></script>
 		<script src="js/UninformedSearch.js"></script>
 		<script src="js/HeuristicSearch.js"></script>
-		<script type="text/javascript">Puzzle.init()</script>
+		<script type="text/javascript">
+		Puzzle.init()
+		$('#scramble').click( function() {
+			var moveList = Puzzle.scrambleTiles(),
+				formatedList = formatMoveList();
+			console.log(formatedList);
+			$('.movelist').html(formatedList);
+			function formatMoveList(){
+				var list = "<p>";
+				for(var i = 0; i < moveList.length; i++){
+					if(i!==0 && i%3 === 0){list += "<br />";}
+					list += moveList[i];
+				}
+				return list + "</p>";
+			}
+		});
+
+		$('#setgoalstate').click( function() {
+			var oldGoalState = Puzzle.getGoalState();
+			Puzzle.setGoalState(Puzzle.getTilePositions());
+		});
+		</script>
 	</body>
 
 </html>
