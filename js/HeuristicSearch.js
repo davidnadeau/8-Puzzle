@@ -1,10 +1,12 @@
-"using strict"
-window.HeuristicSearch = {
-	
-	aStarSearch: {
-	
-		init: function() {}
-	
-	}
+window.HeuristicSearch = (function(){
+	"using strict"
 
-}
+	return {
+		aStarSearch: function() {
+
+			return {
+				init: function() {}
+			};
+		}
+	};
+})();

@@ -1,5 +1,5 @@
 describe("Puzzle Game ... ", function() {
-
+	//Puzzle = Puzzle;
   beforeEach(function(){
     jasmine.getFixtures().set(
     '<table id="puzzle" style="height:300px;width:300px;">	'+
@@ -39,7 +39,7 @@ describe("Puzzle Game ... ", function() {
 
 		it("should store the start position of the tile being dragged", function() {
 			var 
-				oldOffset = Puzzle.oldOffset,
+				oldOffset = oldOffset,
 				el = $("#tile3");
 			
 			el.draggable();
@@ -48,8 +48,8 @@ describe("Puzzle Game ... ", function() {
 				dx: 0,
 				dy: 0
 			});
-			expect(Puzzle.oldOffset.top).toEqual( 109 );
-			expect(Puzzle.oldOffset.left).toEqual( 10 );
+			expect(Puzzle.getOldOffset().top).toEqual( 109 );
+			expect(Puzzle.getOldOffset().left).toEqual( 10 );
 		});
 		
 		it("should ensure that the displacement is at most one tile on drop", function() {
@@ -130,7 +130,7 @@ describe("Puzzle Game ... ", function() {
 			});
 
 			draggable.offset( droppable.offset() );
-		  droppable.offset( Puzzle.oldOffset );
+		  droppable.offset( Puzzle.getOldOffset() );
 
 		  //0 and 3 have been correct
 			expect(Puzzle.checkGameState()).toEqual( true );

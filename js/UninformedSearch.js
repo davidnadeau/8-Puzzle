@@ -1,10 +1,12 @@
-"using strict"
-window.UninformedSearch = {
-	
-	breadthFirstSearch: {
+window.UninformedSearch = (function(){
+	"using strict"
 
-		init: function() {}
-	
-	}
-	
-}
+	return {
+		breadthFirstSearch: function() {
+
+			return {
+				init: function() {}
+			};
+		}
+	};
+})();
