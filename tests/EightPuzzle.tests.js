@@ -2,20 +2,20 @@ describe("Puzzle Game ... ", function() {
     beforeEach(function(){
         jasmine.getFixtures().set(
             '<table id="puzzle" style="height:300px;width:300px;">  '+
-              '<tr id="row" style="height:33%">'+
-                '<td id = "tile0" style = "width:33%" class = "draggable"></td>'+
-                '<td id = "tile1" style = "width:33%" class = "draggable">1</td>'+
-                '<td id = "tile2" style = "width:33%" class = "draggable">2</td>'+
+              '<tr id="row" style="height:33.33333333333333%%">'+
+                '<td id = "tile0" style = "width:33.33333333333333%%" class = "draggable"></td>'+
+                '<td id = "tile1" style = "width:33.33333333333333%%" class = "draggable">1</td>'+
+                '<td id = "tile2" style = "width:33.33333333333333%%" class = "draggable">2</td>'+
               '</tr>'+
-              '<tr id="row" style="height:33%">'+
-                '<td id = "tile3" style = "width:33%" class = "draggable">3</td>'+
-                '<td id = "tile4" style = "width:33%" class = "draggable">4</td>'+
-                '<td id = "tile5" style = "width:33%" class = "draggable">5</td>'+
+              '<tr id="row" style="height:33.33333333333333%%">'+
+                '<td id = "tile3" style = "width:33.33333333333333%%" class = "draggable">3</td>'+
+                '<td id = "tile4" style = "width:33.33333333333333%%" class = "draggable">4</td>'+
+                '<td id = "tile5" style = "width:33.33333333333333%%" class = "draggable">5</td>'+
               '</tr>'+
-              '<tr id="row" style="height:33%">'+
-                '<td id = "tile6" style = "width:33%" class = "draggable">6</td>'+
-                '<td id = "tile7" style = "width:33%" class = "draggable">7</td>'+
-                '<td id = "tile8" style = "width:33%" class = "draggable">8</td>'+
+              '<tr id="row" style="height:33.33333333333333%%">'+
+                '<td id = "tile6" style = "width:33.33333333333333%%" class = "draggable">6</td>'+
+                '<td id = "tile7" style = "width:33.33333333333333%%" class = "draggable">7</td>'+
+                '<td id = "tile8" style = "width:33.33333333333333%%" class = "draggable">8</td>'+
               '</tr>'+
             '</table>' 
         );
@@ -45,15 +45,15 @@ describe("Puzzle Game ... ", function() {
                 dy: 0
             });
 
-            expect(Puzzle.getOldOffset().top).toEqual( 109 );
+            expect(Puzzle.getOldOffset().top).toEqual( 110 );
             expect(Puzzle.getOldOffset().left).toEqual( 10 );
         });
       
         it("should ensure that the displacement is at most one tile on drop", function() {
-            expect(Puzzle.validDisplacement( 100, 100 )).toEqual( false );
-            expect(Puzzle.validDisplacement( 99, 100 )).toEqual( true );
-            expect(Puzzle.validDisplacement( 100, 99 )).toEqual( true);
-            expect(Puzzle.validDisplacement( 99, 99 )).toEqual( true);
+            expect(Puzzle.validDisplacement( 150, 150 )).toEqual( false );
+            expect(Puzzle.validDisplacement( 150, 100 )).toEqual( false );
+            expect(Puzzle.validDisplacement( 100, 150 )).toEqual( false);
+            expect(Puzzle.validDisplacement( 100, 100 )).toEqual( true);
         });
 
         it("should ensure that the tile can only move up or down", function() {

@@ -30,11 +30,11 @@ window.Puzzle = (function(){
             function onDrop( event, ui ) {      
                 if ( Puzzle.validMove($(this)) ) {
                     ui.draggable.draggable( 'option', 'revert', false );
-
-                    //swap tiles
+                     //swap tiles
                     ui.draggable.offset($(this).offset());
                     $(this).offset(oldOffset);
                 }
+                    console.log(Puzzle.checkGameState());
 
                 if( Puzzle.checkGameState() ){
                     console.log("WINNER");
@@ -55,7 +55,7 @@ window.Puzzle = (function(){
             return (a&&b&&c)?true:false;
         },
         validDisplacement: function( ydisplacement, xdisplacement ) {
-            return ydisplacement===99 || xdisplacement===99;
+            return ydisplacement<150 && xdisplacement<150;
         },
         validDirection: function( ydisplacement, xdisplacement ) {
             return ydisplacement===0  || xdisplacement===0;
@@ -74,10 +74,10 @@ window.Puzzle = (function(){
 
             for(var i=0;i<9;i++){
                 var
-                    a = Puzzle.approximately( $('#tile'+i).offset().left - padding, ( i%3 )*tileSideLength ),
-                    b = Puzzle.approximately( $('#tile'+i).offset().top - padding, i<3?0:i<6?tileSideLength:2*tileSideLength );
-              
-                if(!(a&&b)){
+                    dx = Puzzle.approximately( $('#tile'+i).offset().left - padding, ( i%3 )*tileSideLength ),
+                    dy = Puzzle.approximately( $('#tile'+i).offset().top - padding, i<3?0:i<6?tileSideLength:2*tileSideLength );
+                
+                if(!(dx&&dy)){
                     return false; 
                 }
             }

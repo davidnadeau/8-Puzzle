@@ -3,30 +3,46 @@
 <html lang="en">
 
 	<head>
-    	<meta charset="utf-8">
+		<meta charset="utf-8">
 		<title>David | AI-A1.P2</title>
-		<!--link rel="stylesheet" href="css/bootstrap.css"-->
 		<link rel="stylesheet" href="css/styles.css">
 	</head>
 
 	<body>
-		<table id="puzzle">	
-			<tr id="row">
-				<td id = "tile0" style = "background-color:#ccc" class = "draggable"></td>
-				<td id = "tile1" style = "background-color:#444" class = "draggable">1</td>
-				<td id = "tile2" style = "background-color:#555" class = "draggable">2</td>
-			</tr>
-			<tr id="row">
-				<td id = "tile3" style = "background-color:#666" class = "draggable">3</td>
-				<td id = "tile4" style = "background-color:#777" class = "draggable">4</td>
-				<td id = "tile5" style = "background-color:#888" class = "draggable">5</td>
-			</tr>
-			<tr id="row">
-				<td id = "tile6" style = "background-color:#999" class = "draggable">6</td>
-				<td id = "tile7" style = "background-color:#aaa" class = "draggable">7</td>
-				<td id = "tile8" style = "background-color:#bbb" class = "draggable">8</td>
-			</tr>
-		</table>
+		<div class="container">
+			<div class="row">
+				<div class="col-6">
+					<table id="puzzle">	
+						<tr id="row">
+							<td id = "tile0" style = "background-color:#1f77b4" class = "draggable"></td>
+							<td id = "tile1" style = "background-color:#ff7f0e" class = "draggable">1</td>
+							<td id = "tile2" style = "background-color:#2ca02c" class = "draggable">2</td>
+						</tr>
+						<tr id="row">
+							<td id = "tile3" style = "background-color:#d62728" class = "draggable">3</td>
+							<td id = "tile4" style = "background-color:#9467bd" class = "draggable">4</td>
+							<td id = "tile5" style = "background-color:#8c564b" class = "draggable">5</td>
+						</tr>
+						<tr id="row">
+							<td id = "tile6" style = "background-color:#e377c2" class = "draggable">6</td>
+							<td id = "tile7" style = "background-color:#7f7f7f" class = "draggable">7</td>
+							<td id = "tile8" style = "background-color:#bcbd22" class = "draggable">8</td>
+						</tr>
+					</table>
+				</div>
+				<div class="col-6 ui-controls">
+					<div class="move-list">
+					<h1>Move List</h1>
+					<p>move0<br/>move1<br/>move2<br/>move3<br/>move4<br/>move5<br/>move6<br/>move7<br/>move7<br/>move8<br/>move9</p>
+					</div>
+					<div class="search-buttons">
+						<input type="button" value="A* Search"/><br />
+						<input type="button" value="Breadth First Search"/>
+						<input type="button" value="Scramble"/>
+					</div>
+				</div>
+			</div>
+		</div>
 		<script src="bower_components/jquery/jquery.min.js"></script>
 		<script src="bower_components/jquery-ui/ui/minified/jquery-ui.min.js"></script>
 		<script src="js/EightPuzzle.js"></script>

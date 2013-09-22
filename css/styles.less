@@ -1,21 +1,93 @@
-@puzzleHeight:	300px; 
-@puzzleWidth:	300px; 
-@tileSize:		33%;
-table { 
-	height: @puzzleHeight; 
-	width: 	@puzzleWidth; 
-	-webkit-touch-callout: none;
-	-webkit-user-select: none;
-	-khtml-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	user-select: none;
+body {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.428571429;
+  color: #333333;
+  background-color: #ffffff;
+}
 
-	tr { 
-		height: @tileSize; 
-		td {
-			width:  @tileSize; 
-			text-align: center;
-		}
-	}
+@puzzleHeight:  300px; 
+@puzzleWidth:   300px; 
+table { 
+  height: @puzzleHeight; 
+  width:  @puzzleWidth; 
+  -webkit-user-select:    none;
+  -khtml-user-select:     none;
+  -moz-user-select:       none;
+  -ms-user-select:        none;
+  user-select:            none;
+  tr { 
+    height: 33.33333333333333%; 
+    td {
+        position: relative;
+        width: 33.33333333333333%; 
+        text-align: center;
+        border: 2px solid #1d7373;
+    }
+  }
+}
+
+.container {
+  .container-border(500px);
+
+  .row {
+    .col-1 {.col-position(8.333333333333332%);}
+    .col-2 {.col-position(16.666666666666664%);}
+    .col-3 {.col-position(25%);}
+    .col-4 {.col-position(33.33333333333333%);}
+    .col-5 {.col-position(41.66666666666667%);}
+    .col-6 {.col-position(50%);}
+    .col-7 {.col-position(58.333333333333336%);}
+    .col-8 {.col-position(6.66666666666666%);}
+    .col-9 {.col-position(75%);}
+    .col-10 {.col-position(83.33333333333334%);}
+    .col-11 {.col-position(91.66666666666666%);}
+    .col-12 {.col-position(100%);}
+
+    .ui-controls {
+      position: relative;
+      height:@puzzleHeight;
+
+      .search-buttons {
+        position:absolute;
+        width:75%;
+        right:2px;
+        bottom:2px;
+
+        input {
+          width:100%;
+        }
+      }
+      .move-list {
+        position:absolute;
+        width:75%;
+        right:2px;
+        top:2px;
+        height:70%;
+        background-color: #17becf;
+        text-align: center;
+        overflow-y: scroll;
+
+        h1 {
+          font-size: 1em;
+          color:#025258;
+        }
+        p {
+          font-size: 0.875em;
+          color:#077c87;
+        }
+      }
+    }
+  }
+}
+.container-border(@width) {
+  padding: 5px;
+  width: @width;
+  height: @puzzleHeight;
+}
+
+.col-position(@width) {
+  float: left;
+  width:  @width;
+  height: @puzzleHeight;
 }
