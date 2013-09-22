@@ -19,7 +19,7 @@ module.exports = function(config) {
       'bower_components/jquery-simulate/jquery.simulate.js',
       'bower_components/jasmine-jquery/lib/jasmine-jquery.js',
       'js/*.js',
-      'tests/*.js'
+      'tests/*.tests.js'
     ],
 
 
