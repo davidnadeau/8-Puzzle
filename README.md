@@ -8,16 +8,3 @@ can slide into the space. The objective is to reach a given configuration from t
 
 Go to the [following website](http://soote.github.io/8-Puzzle/). There you can play the game for
 yourself, or use one of the two search algorithms by pressing their accompanied button. 
-
-## Contact
-
-Have a question?
-
-* [Email](dn09uo at brocku)
-
-## Authors
-
-* [@David Nadeau](https://github.com/soote)
-
-## License
-Licensed under the MIT License
