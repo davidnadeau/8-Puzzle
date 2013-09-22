@@ -246,7 +246,7 @@ a {
   zoom:1;
 }
 body{font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;font-size:14px;line-height:1.428571429;color:#333;background-color:#fff}
-table{height:300px;width:300px;-webkit-user-select:none;-khtml-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}table tr{height:33.33333333333333%}table tr td{position:relative;width:33.33333333333333%;text-align:center;border:2px solid #1d7373}
+table{height:300px;width:300px;-webkit-user-select:none;-khtml-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}table tr{height:33.33333333333333%}table tr td{position:relative;width:33.33333333333333%;text-align:center;border:2px solid #000}
 .container{padding:5px;width:500px;height:300px}.container .row .col-1{float:left;width:8.333333333333332%;height:300px}
 .container .row .col-2{float:left;width:16.666666666666664%;height:300px}
 .container .row .col-3{float:left;width:25%;height:300px}
