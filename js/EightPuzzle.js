@@ -119,7 +119,7 @@ window.Puzzle = (function(){
         },
         getTilePositions: function(){
             var y = 0,
-                x = 0;
+                x = 0,
                 originalTilePositions = [];         
             for(var i = 0; i < 9; i++) {
                 if((i%3)===0) {y++;}
