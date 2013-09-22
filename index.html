@@ -48,17 +48,17 @@
         </tr>
       </table>
     </div>
-    <div class="col-6 ui-controls">
-      <div class="move-list">
-      <h1>Move List</h1>
-      <p>move0<br/>move1<br/>move2<br/>move3<br/>move4<br/>move5<br/>move6<br/>move7<br/>move7<br/>move8<br/>move9</p>
-      </div>
-      <div class="search-buttons">
-        <input type="button" value="A* Search"/><br />
-        <input type="button" value="Breadth First Search"/>
-        <input type="button" value="Scramble"/>
-      </div>
-    </div>
+	<div class="col-6 ui-controls">
+		<div class="move-list">
+			<h1>Goal</h1>
+		</div>
+		<div class="search-buttons">
+			<input id="astar" type="button" value="A* Search"/><br />
+			<input id="bfs" type="button" value="Breadth First Search"/>
+			<input id="setgoalstate" type="button" value="Set Goal State"/>						
+			<input id="scramble" type="button" value="Scramble"/>
+		</div>
+	</div>
   </div>
 </div>
 <p>Having trouble with 8-Puzzle? contact <a>dn09uo</a> and I’ll help you sort it out.</p>
@@ -67,7 +67,32 @@
     <script src="bower_components/jquery/jquery.js" type="text/javascript"></script>
     <script src="bower_components/jquery-ui/ui/jquery-ui.js" type="text/javascript"></script>
     <script src="javascripts/main.js" type="text/javascript"></script>
-    <script type="text/javascript">Puzzle.init()</script>
+    <script type="text/javascript">
+    Puzzle.init()
+	$( '.move-list' ).html( "<h1>Goal</h1><p>"+Puzzle.getGoalState()+"</p>" );
+
+	$('#scramble').click( function() {
+		Puzzle.scrambleTiles();
+		$( '.move-list' ).html( "<h1>Goal</h1><p>"+Puzzle.getGoalState()+"</p>" );
+	});
+
+	$('#astar').click( function() {
+		$( '.move-list' ).html( "<h1>Start</h1><p>"+Puzzle.getTilePositions()
+			+"</p><h1>Goal</h1><p>"+Puzzle.getGoalState()+"</p>" );
+	});
+
+	$('#bfs').click( function() {
+		$( '.move-list' ).html( "<h1>Start</h1><p>"+Puzzle.getTilePositions()
+			+"</p><h1>Goal</h1><p>"+Puzzle.getGoalState()+"</p>" );
+	});
+
+	$('#setgoalstate').click( function() {
+		var oldGoalState = Puzzle.getGoalState();
+		Puzzle.setGoalState(Puzzle.getTilePositions());
+		$( '.move-list' ).html( "<h1>Goal</h1><p>"+Puzzle.getGoalState()+"</p>" );
+
+	});
+    </script>
     
   </body>
 </html>
