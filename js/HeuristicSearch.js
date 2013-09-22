@@ -1,12 +1,12 @@
 window.HeuristicSearch = (function(){
-  "using strict"
+    "using strict"
 
-  return {
-    aStarSearch: function() {
+    return {
+        aStarSearch: function() {
 
-      return {
-        init: function() {}
-      };
-    }
-  };
+            return {
+                init: function() {}
+            };
+        }
+    };
 })();
