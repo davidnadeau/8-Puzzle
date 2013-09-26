@@ -40,7 +40,14 @@ describe("Puzzle Game ... ", function() {
             newPositions = Puzzle.getTilePositions();
             expect(Puzzle.tilesIdentical(originalPositions, newPositions)).toBe( false );
         });
-    
+        it("should compare two boards",function(){
+            expect(Puzzle.tilesIdentical([],[])).toBe( true );
+            expect(Puzzle.tilesIdentical([0,1,2,3,4,5,6,7,8],[])).toBe( false );
+            expect(Puzzle.tilesIdentical([],[0,1,2,3,4,5,6,7,8])).toBe( false );
+            expect(Puzzle.tilesIdentical([0,1,2,3,4,5,6,7,8],[0,1,2,3,4,5,6,7,8])).toBe( true );
+            expect(Puzzle.tilesIdentical([0,2,1,3,4,5,6,7,8],[0,1,2,3,4,5,6,7,8])).toBe( false );
+            expect(Puzzle.tilesIdentical([0,1,2,3,4,5,6,7,8],[0,2,1,3,4,5,6,7,8])).toBe( false );
+        });
         it("should swap two tiles", function() {
             var firstTile = $("#tile3"),
                 secondTile =  $("#tile8"),
@@ -184,6 +191,14 @@ describe("Puzzle Game ... ", function() {
             expect(Puzzle.checkGameState()).toEqual( true );
         });
 
+        it("it should calculate the number of inversions", function(){
+            expect(Puzzle.detectInversions([0,1,2,3,4,5,6,7,8])).toEqual( 0 );
+            expect(Puzzle.detectInversions([1,0,2,3,4,5,6,7,8])).toEqual( 0 );
+            expect(Puzzle.detectInversions([0,1,2,6,4,5,3,7,8])).toEqual( 5 );
+            expect(Puzzle.detectInversions([1,0,3,4,2,5,7,8,6])).toEqual( 4 );
+            expect(Puzzle.detectInversions([7,0,2,8,5,3,6,4,1])).toEqual( 19 );
+        });
+        
         function dragonDrop(drag, drop){
             var draggable, droppable, droppableOffset, draggableOffset;
 

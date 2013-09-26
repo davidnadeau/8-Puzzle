@@ -2,11 +2,13 @@ window.HeuristicSearch = (function(){
     "using strict"
 
     return {
-        aStarSearch: function() {
-
+        aStar: function( start, goal ) {
+            var board = start;
             return {
-                init: function() {}
-            };
+
+                init: function() {},
+                search: function() {}
+            }
         }
     };
 })();

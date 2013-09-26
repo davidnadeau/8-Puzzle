@@ -18,7 +18,7 @@ window.Puzzle = (function(){
 
             $('.draggable').droppable( {
                 accept:     '#row td',
-                cursor:       'arrow',     //change cursor back to default on drop
+                cursor:       'boardow',     //change cursor back to default on drop
                 hoverClass: 'hovered',
                 drop:       onDrop
             });
@@ -30,7 +30,7 @@ window.Puzzle = (function(){
             }
 
             function onDrop( event, ui ) {      
-                if ( Puzzle.validMove($(this)) ) {
+                if ( Puzzle.isValidMove($(this)) ) {
                     ui.draggable.draggable( 'option', 'revert', false );
                      //swap tiles
                     ui.draggable.offset($(this).offset());
@@ -42,7 +42,7 @@ window.Puzzle = (function(){
                 }
             }
         },
-        validMove: function( tile ) {
+        isValidMove: function( tile ) {
             var
                 ydisplacement = Puzzle.getDifference(oldOffset.top, tile.offset().top),
                 xdisplacement = Puzzle.getDifference(oldOffset.left,tile.offset().left),
@@ -66,6 +66,116 @@ window.Puzzle = (function(){
         },
         getDifference: function( x, y ) {
             return Math.abs(x - y);
+        },
+        getValidMoves: function( board ) {
+            var moves = [];
+
+            function findBlank( board ) {
+                for(var i = 0; i < board.length; i++){
+                    if( board[i]===0){
+                        return i;
+                    }
+                }
+                return -1;
+            }
+            var blank = findBlank( board );
+
+            var len = board.length,
+                copy = [];
+
+            switch (blank){
+                case 0: 
+                    copy = board.slice(0);
+                    moves.push( moveLeft(copy) );
+                    copy = board.slice(0);
+                    moves.push( moveUp(copy) );
+                    break;
+                case 1: 
+                    copy = board.slice(0);
+                    moves.push( moveRight(copy) );
+                    copy = board.slice(0);
+                    moves.push( moveLeft(copy) );
+                    copy = board.slice(0);
+                    moves.push( moveUp(copy) );
+                    break;
+                case 2: 
+                    copy = board.slice(0);
+                    moves.push( moveRight(copy) );
+                    copy = board.slice(0);
+                    moves.push( moveUp(copy) );
+                    break;
+                case 3: 
+                    copy = board.slice(0);
+                    moves.push( moveDown(copy) );
+                    copy = board.slice(0);
+                    moves.push( moveLeft(copy) );
+                    copy = board.slice(0);
+                    moves.push( moveUp(copy) );
+                    break;
+                case 4: 
+                    copy = board.slice(0);
+                    moves.push( moveDown(copy) );
+                    copy = board.slice(0);
+                    moves.push( moveRight(copy) );
+                    copy = board.slice(0);
+                    moves.push( moveLeft(copy) );
+                    copy = board.slice(0);
+                    moves.push( moveUp(copy) );
+                    break;
+                case 5: 
+                    copy = board.slice(0);
+                    moves.push( moveDown(copy) );
+                    copy = board.slice(0);
+                    moves.push( moveRight(copy) );
+                    copy = board.slice(0);
+                    moves.push( moveUp(copy) );
+                    break;
+                case 6: 
+                    copy = board.slice(0);
+                    moves.push( moveDown(copy) );
+                    copy = board.slice(0);
+                    moves.push( moveRight(copy) );
+                    break;
+                case 7: 
+                    copy = board.slice(0);
+                    moves.push( moveDown(copy) );
+                    copy = board.slice(0);
+                    moves.push( moveRight(copy) );
+                    copy = board.slice(0);
+                    moves.push( moveLeft(copy) );
+                    break;
+                case 8: 
+                    copy = board.slice(0);
+                    moves.push( moveDown(copy) );
+                    copy = board.slice(0);
+                    moves.push( moveRight(copy) );
+                    break;
+            }
+            function moveUp( board ){
+                var b = board[blank+3];
+                board[blank+3] = board[blank];
+                board[blank] = b;
+                return board;
+            }
+            function moveDown( board ){
+                var b = board[blank-3];
+                board[blank-3] = board[blank];
+                board[blank] = b;
+                return board;
+            }
+            function moveLeft( board ){
+                var b = board[blank+1];
+                board[blank+1] = board[blank];
+                board[blank] = b;
+                return board;
+            }
+            function moveRight( board ){
+                var b = board[blank-1];
+                board[blank-1] = board[blank];
+                board[blank] = b;
+                return board;
+            }
+            return moves===[]?{length:0}:moves;
         },
         checkGameState: function() {
             var 
@@ -132,23 +242,26 @@ window.Puzzle = (function(){
             }
             return originalTilePositions;
         },
+        detectInversions: function( board ) {
+            var inversions = 0;
+            for (var i = 0; i < board.length; i++) {
+                if ( board[i] != 0) {
+                    for (var j = i + 1; j < board.length; j++) {
+                        if (board[j] != 0 && board[j] <  board[i]) {
+                            inversions++;
+                        }
+                    }
+                }
+            }
+            return inversions;
+        },
         tilesIdentical: function(a, b) {
             var i = a.length;
-
+            if(a.length!==b.length)return false;
             while (i--) {
                 if (a[i] !== b[i]) return false;
             }
             return true;
         }
-        //,
-        // formatMoveList: function( movelist ) {
-        //     var list = "<h1>Move List</h1><p>";
-        //     for(var i = 0; i < movelist.length; i++){
-        //         if(i!==0 && i%3 === 0){list += "<br />";}
-        //         list += movelist[i];
-        //     }
-        //     return list + "</p>";
-        // }
-
     }
 })();
