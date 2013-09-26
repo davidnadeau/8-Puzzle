@@ -67,15 +67,15 @@
 		});
 		
 		$('#bfs').click( function() {
-			var solution = UninformedSearch.breadthFirst(Puzzle.getTilePositions(), Puzzle.getGoalState())
+			UninformedSearch.breadthFirst(Puzzle.getTilePositions(), Puzzle.getGoalState())
 				.init()
 				.buildQueue()
 				.search();
-			var moveDisplay = "<h1>Move List</h1>";
-			for(var i = 0; i<solution.length;i++){
-				moveDisplay+="<p>"+solution[i]+"</p>";
-			}
-				$( '.move-list' ).html(moveDisplay);
+			// var moveDisplay = "<h1>Move List</h1>";
+			// for(var i = 0; i<solution.length;i++){
+			// 	moveDisplay+="<p>"+solution[i]+"</p>";
+			// }
+			// 	$( '.move-list' ).html(moveDisplay);
 		});
 
 		$('#setgoalstate').click( function() {

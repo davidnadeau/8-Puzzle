@@ -3,13 +3,14 @@ window.UninformedSearch = (function(){
     
     return {
         breadthFirst: function( start, goal ) {
-            var rootNode = TreeNode(),solution=[];
+            var rootNode = new Tree,solution=[];
             var solved;
             var prevMoves = [];
             return {
 
                 init: function( ) {
-                    rootNode.setBoard(start).setParent(rootNode);
+
+                    rootNode.board = start;rootNode.parent=rootNode;rootNode.id="root";
                     solved=false;
                     solution.length=0;
                     console.log("From:",start,"To",goal);
@@ -26,55 +27,48 @@ window.UninformedSearch = (function(){
                 },
                 buildQueue: function( ) {
                     var j=0,newMoves, treeNode, siblings = [];
-                    newMoves = Puzzle.getValidMoves( rootNode.getBoard() );
+                    dfs(rootNode);
+                    //while(!solved) {
+                    function dfs(currentMove){
+                        if(solved)return this;
+                        var siblings = [];
 
-                    for(var i =0;i<newMoves.length;i++) {
-                        treeNode=TreeNode().setParent(rootNode).setBoard(newMoves[i]).setSiblings(siblings);
-                        siblings.push(treeNode);
-                    }
-                    rootNode.setChildren(siblings);
+                        newMoves = Puzzle.getValidMoves( currentMove.board );
 
-                    currentMove = rootNode;
-                    while(!solved) {
-                        // prevMoves.push(currentMove);
-                        // solution.push(currentMove);
-                //newMoves = Puzzle.getValidMoves( currentMove.getBoard() );
-                        //console.log(currentMove);
-                        var childrenNodes = [];
                         for(var i =0;i<newMoves.length;i++) {
-                            treeNode=TreeNode().setParent(currentMove).setBoard(newMoves[i]);
-                            //console.log(treeNode);
-                            // console.log(newMoves[i]);
-                            //moves.push(newMoves[i]);
-                            // console.log(moves);
+                            treeNode=new Tree;
+                            treeNode.parent=currentMove;treeNode.board=newMoves[i];treeNode.siblings=siblings;
+                            treeNode.id="move number: "+j++;
+
                             if( Puzzle.tilesIdentical(newMoves[i],goal) ) {
-                                // solution.push(newMoves[i]);
                                 solved=true;
                                 console.log("SOLUTION FOUND");
-                                currentMove.setChildren(treeNode);
-                                console.log(rootNode);
-                                break;
+                                currentMove.children = treeNode;
+                                siblings.push(treeNode);
+                                treeNode.parent.children = siblings;
+                                var solution = [];
+                                while(true){
+                                    if(treeNode.parent !== treeNode){
+                                        solution.unshift(treeNode);
+                                        treeNode = treeNode.parent;
+                                    }else break;
+                                }
+                                console.log(solution);
+                                return this;
                             }else if(Puzzle.tilesIdentical(newMoves[i],start)){
-
-                                //moves.pop();
-                            }else if(seenBefore(newMoves[i])){}
-                            else{
-                                childrenNodes.push(treeNode);
+                            }else{
+                                siblings.push(treeNode);
+                                treeNode.parent.children=siblings;
+                                dfs(treeNode);
                             }
                         }
-                        currentMove.setChildren(childrenNodes)
-                        //console.log(currentMove);
-                        j++
-                        if(j>181400)return [1,1];
-                        if(solved)break;
-
-                        currentMove = moves.splice(0,1)[0];
                     }
                     function seenBefore(node){
                         for(var i =0;i<prevMoves.length;i++){
                             if(Puzzle.tilesIdentical(node,prevMoves[i]))return true;
                         }return false;
-                    }                    
+                    }
+                    return this;                 
                 },
                 copy: function( arr ){
                         for(var j in arr) {
@@ -89,9 +83,23 @@ window.UninformedSearch = (function(){
                     return a;
                 },
                 search: function( ) {
-                    function recurse(){
-
-                    }
+                    // var preOrder = [];
+                    // DepthFirst( rootNode );
+                    // function DepthFirst( root ){
+                    //     // Pre-order
+                    //     preOrder[ preOrder.length ] = root.board;
+                    //     //console.log(rootNode);
+                    //     for( var i = 0; i<root.children.length;i++ ){
+                    //         child = root.children[i];
+                    //         if( Puzzle.tilesIdentical(child.board,goal) ) {
+                    //             console.log("preOrder");
+                    //             console.log(preOrder);
+                    //             console.log(rootNode);
+                    //             return;
+                    //         }
+                    //         DepthFirst( child );
+                    //     }
+                    // }
                 }
             }
         }
